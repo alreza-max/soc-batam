@@ -1,0 +1,26 @@
+name: Buat ikon PWA
+on:
+  push:
+    branches: [gh-pages]
+    paths: ['tools/mkicon.py', '.github/workflows/icons.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  icons:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: sudo apt-get install -y fonts-dejavu-core
+      - run: pip install pillow
+      - run: python tools/mkicon.py
+      - name: Commit ikon
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add icons
+          git diff --cached --quiet || git commit -m "Buat ikon PWA otomatis"
+          git push
