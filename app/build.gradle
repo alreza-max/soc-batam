@@ -1,0 +1,41 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.socbatam.dashboard'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.socbatam.dashboard'
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(System.getenv('KS_PATH') ?: 'release.jks')
+            storePassword System.getenv('KS_PASS')
+            keyAlias 'socbatam'
+            keyPassword System.getenv('KS_PASS')
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}
